@@ -1,8 +1,6 @@
 import pathlib
-import pickle
 
 import pandas as pd
-import numpy as np
 
 PATH = pathlib.Path(__file__).parent
 
@@ -21,7 +19,7 @@ def extract(year: int, type_: str):
     try:
         data_file = next((PATH / "rohdaten").glob(f"*{year}*"))
     except StopIteration:
-        raise FileNotFoundError(f"There is no file for the year {year}.")
+        raise FileNotFoundError(f"Could not find a file for the year {year}.")
 
     # Discover the sheet name
     for sheet_name in SYNONYMS[type_]:
@@ -30,8 +28,12 @@ def extract(year: int, type_: str):
         except ValueError:
             print(f"No sheet {sheet_name} in {year}")
         else:
-            print(f"Found sheet for '{type_}' in '{data_file} for {year}: {sheet_name}")
+            print(
+                f"Found sheet for '{type_}' in '{data_file}' for {year}: {sheet_name}"
+            )
             break
+    else:
+        raise ValueError(f"Could not find a sheet for '{type_}' in '{data_file}'.")
 
     # Discover where the data starts
     for header_row in range(0, 5):
@@ -42,9 +44,10 @@ def extract(year: int, type_: str):
             if "Anz. Beschwerden" in df.columns:
                 df = df.rename(columns={"Anz. Beschwerden": "Beschwerden"})
                 break
-
     else:
-        raise ValueError(f"Could not find data in {data_file} sheet {sheet_name}.")
+        raise ValueError(
+            f"Could not find data in sheet '{sheet_name}' in '{data_file}'."
+        )
 
     # Identify column names
     columns = list(df.columns)
