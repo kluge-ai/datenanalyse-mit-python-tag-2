@@ -84,5 +84,5 @@ if __name__ == "__main__":
     print(df_full.head())
     print(df_full.dtypes)
 
-    df_full.to_excel(PATH / "beschwerdestatistik_komplett.xlsx")
-    df_full.to_csv(PATH / "beschwerdestatistik_komplett.csv")
+    df_full.to_excel(PATH / "beschwerdestatistik_komplett.xlsx", index=False)
+    df_full.to_csv(PATH / "beschwerdestatistik_komplett.csv", index=False)
