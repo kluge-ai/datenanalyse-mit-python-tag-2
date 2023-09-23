@@ -69,6 +69,9 @@ def extract(year: int, type_: str):
     # Change types
     df = df.astype({"Reg-Nr.": int, "Beschwerden": int, "Bestand": int, "Name": str})
 
+    # Strip excess whitespace
+    df["Name"] = df["Name"].str.strip()
+
     # Add meta information
     df["Typ"] = type_
     df["Jahr"] = year
