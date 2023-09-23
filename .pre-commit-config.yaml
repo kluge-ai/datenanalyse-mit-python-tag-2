@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+        args: ['--unsafe']
+      - id: end-of-file-fixer
+        exclude: ^(data/|examples/data/|bin/)
+      - id: trailing-whitespace
+        exclude: ^(data/|examples/data/|bin/)
+      - id: mixed-line-ending
+
+  - repo: local
+    hooks:
+      - id: jupyter-nb-clear-output
+        name: jupyter-nb-clear-output
+        files: \.ipynb$
+        stages: [ commit ]
+        language: python
+        entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
+        additional_dependencies: [ 'jupyterlab' ]
